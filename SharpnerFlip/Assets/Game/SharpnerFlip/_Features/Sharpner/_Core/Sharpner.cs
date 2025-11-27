@@ -85,6 +85,10 @@ public class Sharpner : MonoBehaviour
             isFlipping = true;
         }
         
+        Vector3 currentVelocity = rigidBody.linearVelocity;
+        currentVelocity.y = 0f;
+        rigidBody.linearVelocity = currentVelocity;
+        
         Vector3 jumpForce = new Vector3(0f, upwardForce, forwardForce);
         rigidBody.AddForce(jumpForce, ForceMode.Impulse);
     }
@@ -107,6 +111,11 @@ public class Sharpner : MonoBehaviour
             currentRotationProgress = 0f;
             targetRotation = 0f;
             isFlipping = false;
+            
+            Vector3 currentVelocity = rigidBody.linearVelocity;
+            currentVelocity.y = 0f;
+            currentVelocity.z = 0f;
+            rigidBody.linearVelocity = currentVelocity;
         }
     }
 }
