@@ -7,4 +7,13 @@ public class Collectible : MonoBehaviour
     
     [Header("Properties")]
     public bool canBeSharpened = true;
+    
+    private bool isCollected = false;
+    
+    public bool IsCollected => isCollected;
+    
+    public void MarkAsCollected()
+    {
+        isCollected = true;
+    }
 }

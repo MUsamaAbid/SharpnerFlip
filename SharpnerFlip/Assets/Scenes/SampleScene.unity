@@ -505,13 +505,33 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1990781278574908564, guid: 87dfa56f557ed44acb5168cad6f57c29, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 1990781278574908564, guid: 87dfa56f557ed44acb5168cad6f57c29, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 1990781278574908564, guid: 87dfa56f557ed44acb5168cad6f57c29, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 50
+      objectReference: {fileID: 0}
     - target: {fileID: 3807935700302448515, guid: 87dfa56f557ed44acb5168cad6f57c29, type: 3}
       propertyPath: upwardForce
       value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 3807935700302448515, guid: 87dfa56f557ed44acb5168cad6f57c29, type: 3}
       propertyPath: forwardForce
-      value: 4
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3807935700302448515, guid: 87dfa56f557ed44acb5168cad6f57c29, type: 3}
+      propertyPath: canSharpenOnlyWhileFlipping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3807935700302448515, guid: 87dfa56f557ed44acb5168cad6f57c29, type: 3}
+      propertyPath: sharpeningGravityMultiplier
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 6039054104593070711, guid: 87dfa56f557ed44acb5168cad6f57c29, type: 3}
       propertyPath: m_LocalPosition.x
@@ -553,6 +573,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -90
       objectReference: {fileID: 0}
+    - target: {fileID: 7387089402810664708, guid: 87dfa56f557ed44acb5168cad6f57c29, type: 3}
+      propertyPath: m_Constraints
+      value: 114
+      objectReference: {fileID: 0}
     - target: {fileID: 8510174637360874258, guid: 87dfa56f557ed44acb5168cad6f57c29, type: 3}
       propertyPath: m_Name
       value: Sharpner
@@ -560,7 +584,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8510174637360874258, guid: 87dfa56f557ed44acb5168cad6f57c29, type: 3}
+      insertIndex: 1
+      addedObject: {fileID: 944039768}
   m_SourcePrefab: {fileID: 100100000, guid: 87dfa56f557ed44acb5168cad6f57c29, type: 3}
 --- !u!1 &758268254
 GameObject:
@@ -649,6 +676,32 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &944039765 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8510174637360874258, guid: 87dfa56f557ed44acb5168cad6f57c29, type: 3}
+  m_PrefabInstance: {fileID: 604244459}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &944039768
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 944039765}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 0.75, z: 0.85}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &974260195
 GameObject:
   m_ObjectHideFlags: 0

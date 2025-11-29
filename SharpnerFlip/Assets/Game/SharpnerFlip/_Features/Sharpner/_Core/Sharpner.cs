@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(Rigidbody))]
 public class Sharpner : MonoBehaviour
@@ -14,10 +15,22 @@ public class Sharpner : MonoBehaviour
     [SerializeField] private float forwardForce = 5f;
     [SerializeField] private float upwardForce = 8f;
     
+    [Header("Sharpening Settings")]
+    [SerializeField] private bool canSharpenOnlyWhileFlipping = true;
+    [SerializeField] private float sharpeningGravityMultiplier = 0.3f;
+    
+    [Header("Events")]
+    public UnityEvent<Collectible> OnCollectibleSharpened;
+    public UnityEvent<Collectible> OnUnsharpenableHit;
+    
     private Rigidbody rigidBody;
     private float targetRotation;
     private float currentRotationProgress;
     private bool isFlipping;
+    private bool isSharpening;
+    
+    public bool IsFlipping => isFlipping;
+    public bool IsSharpening => isSharpening;
     
     private void Awake()
     {
@@ -74,6 +87,11 @@ public class Sharpner : MonoBehaviour
         {
             UpdateFlip();
         }
+        
+        if (isSharpening)
+        {
+            ApplySharpeningGravity();
+        }
     }
     
     void Flip()
@@ -83,6 +101,11 @@ public class Sharpner : MonoBehaviour
         if (!isFlipping)
         {
             isFlipping = true;
+        }
+        
+        if (isSharpening)
+        {
+            StopSharpening();
         }
         
         Vector3 currentVelocity = rigidBody.linearVelocity;
@@ -113,9 +136,75 @@ public class Sharpner : MonoBehaviour
             isFlipping = false;
             
             Vector3 currentVelocity = rigidBody.linearVelocity;
-            currentVelocity.y = 0f;
+            if (!isSharpening)
+            {
+                currentVelocity.y = 0f;
+            }
             currentVelocity.z = 0f;
             rigidBody.linearVelocity = currentVelocity;
         }
+    }
+    
+    private void OnTriggerEnter(Collider other)
+    {
+        Collectible collectible = other.GetComponent<Collectible>();
+        
+        if (collectible != null)
+        {
+            HandleCollectibleTrigger(collectible);
+        }
+    }
+    
+    private void HandleCollectibleTrigger(Collectible collectible)
+    {
+        if (collectible.IsCollected)
+        {
+            return;
+        }
+        
+        if (collectible.canBeSharpened)
+        {
+            collectible.MarkAsCollected();
+            StartSharpening();
+            Debug.Log($"Sharpening {collectible.collectibleType}!");
+            OnCollectibleSharpened?.Invoke(collectible);
+            // Destroy(collectible.gameObject);
+        }
+        else
+        {
+            Debug.LogWarning($"Hit unsharpenable object: {collectible.collectibleType}! FAIL!");
+            OnUnsharpenableHit?.Invoke(collectible);
+        }
+    }
+    
+    private void StartSharpening()
+    {
+        if (!isSharpening)
+        {
+            isSharpening = true;
+            rigidBody.useGravity = false;
+            
+            Vector3 currentVelocity = rigidBody.linearVelocity;
+            currentVelocity.y = 0f;
+            rigidBody.linearVelocity = currentVelocity;
+            
+            Debug.Log($"SHARPENING STARTED - gravity reduced to {sharpeningGravityMultiplier}x, Y velocity reset to 0");
+        }
+    }
+    
+    private void StopSharpening()
+    {
+        if (isSharpening)
+        {
+            isSharpening = false;
+            rigidBody.useGravity = true;
+            Debug.Log("Stopped sharpening - gravity restored to normal");
+        }
+    }
+    
+    private void ApplySharpeningGravity()
+    {
+        Vector3 customGravity = Physics.gravity * sharpeningGravityMultiplier;
+        rigidBody.AddForce(customGravity, ForceMode.Acceleration);
     }
 }
