@@ -58,7 +58,8 @@ public class CollectibleSystemController
             Collectible spawned = factory.SpawnCollectible(
                 prefab, 
                 currentSpawnPosition, 
-                Quaternion.identity, 
+                Quaternion.identity,
+                config.sharpeningSpeed,
                 collectiblesParent
             );
             

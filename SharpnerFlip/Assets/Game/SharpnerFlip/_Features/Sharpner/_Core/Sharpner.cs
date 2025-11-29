@@ -28,6 +28,7 @@ public class Sharpner : MonoBehaviour
     private float currentRotationProgress;
     private bool isFlipping;
     private bool isSharpening;
+    private Collectible currentCollectible;
     
     public bool IsFlipping => isFlipping;
     public bool IsSharpening => isSharpening;
@@ -165,10 +166,9 @@ public class Sharpner : MonoBehaviour
         if (collectible.canBeSharpened)
         {
             collectible.MarkAsCollected();
-            StartSharpening();
+            StartSharpening(collectible);
             Debug.Log($"Sharpening {collectible.collectibleType}!");
             OnCollectibleSharpened?.Invoke(collectible);
-            // Destroy(collectible.gameObject);
         }
         else
         {
@@ -177,16 +177,19 @@ public class Sharpner : MonoBehaviour
         }
     }
     
-    private void StartSharpening()
+    private void StartSharpening(Collectible collectible)
     {
         if (!isSharpening)
         {
             isSharpening = true;
+            currentCollectible = collectible;
             rigidBody.useGravity = false;
             
             Vector3 currentVelocity = rigidBody.linearVelocity;
             currentVelocity.y = 0f;
             rigidBody.linearVelocity = currentVelocity;
+            
+            collectible.StartSharpening();
             
             Debug.Log($"SHARPENING STARTED - gravity reduced to {sharpeningGravityMultiplier}x, Y velocity reset to 0");
         }
@@ -198,6 +201,13 @@ public class Sharpner : MonoBehaviour
         {
             isSharpening = false;
             rigidBody.useGravity = true;
+            
+            if (currentCollectible != null)
+            {
+                currentCollectible.StopSharpening();
+                currentCollectible = null;
+            }
+            
             Debug.Log("Stopped sharpening - gravity restored to normal");
         }
     }

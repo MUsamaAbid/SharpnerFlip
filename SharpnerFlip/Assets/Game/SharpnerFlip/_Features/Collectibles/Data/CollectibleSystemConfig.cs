@@ -12,6 +12,9 @@ public class CollectibleSystemConfig : ScriptableObject
     public Vector3 spawnDirection = new Vector3(0f, 0f, 1f);
     public float spaceBetweenCollectibles = 5f;
     
+    [Header("Sharpening Settings")]
+    public float sharpeningSpeed = 2f;
+    
     public Collectible GetPrefabByType(CollectibleType type)
     {
         foreach (Collectible prefab in collectiblePrefabs)

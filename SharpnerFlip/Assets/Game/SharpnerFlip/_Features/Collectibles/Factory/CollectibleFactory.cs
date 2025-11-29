@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class CollectibleFactory
 {
-    public Collectible SpawnCollectible(Collectible prefab, Vector3 position, Quaternion rotation, Transform parent = null)
+    public Collectible SpawnCollectible(Collectible prefab, Vector3 position, Quaternion rotation, float sharpeningSpeed, Transform parent = null)
     {
         if (prefab == null)
         {
@@ -11,6 +11,7 @@ public class CollectibleFactory
         }
         
         Collectible collectible = Object.Instantiate(prefab, position, rotation, parent);
+        collectible.Init(sharpeningSpeed);
         return collectible;
     }
 }
