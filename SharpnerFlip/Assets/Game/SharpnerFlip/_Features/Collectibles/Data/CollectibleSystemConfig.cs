@@ -7,6 +7,10 @@ public class CollectibleSystemConfig : ScriptableObject
     [Header("Collectible Prefabs Database")]
     public List<Collectible> collectiblePrefabs = new List<Collectible>();
     
+    [Header("Finish Line")]
+    public GameObject finishLinePrefab;
+    public Vector3 finishLineRotation = new Vector3(0f, 0f, 0f);
+    
     [Header("Spawn Settings")]
     public Vector3 initialSpawnPosition = new Vector3(0f, 0f, 10f);
     public Vector3 spawnDirection = new Vector3(0f, 0f, 1f);

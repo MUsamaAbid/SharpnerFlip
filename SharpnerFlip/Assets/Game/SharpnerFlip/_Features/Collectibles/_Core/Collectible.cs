@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 
 public class Collectible : MonoBehaviour
 {
@@ -7,6 +8,8 @@ public class Collectible : MonoBehaviour
     
     [Header("Properties")]
     public bool canBeSharpened = true;
+    
+    public event Action<Collectible> OnFullySharpened;
     
     private bool isCollected = false;
     private bool _isBeingSharpened = false;
@@ -81,6 +84,9 @@ public class Collectible : MonoBehaviour
         {
             currentScale.y = 0f;
             _isBeingSharpened = false;
+            
+            OnFullySharpened?.Invoke(this);
+            
             Destroy(gameObject);
         }
         

@@ -190,9 +190,9 @@ public class Sharpner : MonoBehaviour
         if (collectible.canBeSharpened)
         {
             collectible.MarkAsCollected();
+            collectible.OnFullySharpened += HandleCollectibleFullySharpened;
             StartSharpening(collectible);
             Debug.Log($"Sharpening {collectible.collectibleType}!");
-            OnCollectibleSharpened?.Invoke(collectible);
         }
         else
         {
@@ -200,6 +200,13 @@ public class Sharpner : MonoBehaviour
             OnUnsharpenableHit?.Invoke(collectible);
             TriggerGameOver($"Hit unsharpenable object: {collectible.collectibleType}");
         }
+    }
+    
+    private void HandleCollectibleFullySharpened(Collectible collectible)
+    {
+        collectible.OnFullySharpened -= HandleCollectibleFullySharpened;
+        OnCollectibleSharpened?.Invoke(collectible);
+        Debug.Log($"Collectible {collectible.collectibleType} fully sharpened!");
     }
     
     private void HandleGroundHit()

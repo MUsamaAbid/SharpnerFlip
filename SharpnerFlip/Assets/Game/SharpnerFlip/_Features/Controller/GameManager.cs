@@ -86,6 +86,8 @@ public class GameManager : MonoBehaviour
         collectibleController.Initialize(collectiblesParent, collectibleConfig);
         collectibleController.SpawnCollectibles(currentLevel);
         
+        SetupFinishLine();
+        
         environmentSpawner = new EnvironmentSpawner();
         environmentSpawner.Initialize(environmentParent);
         environmentSpawner.SpawnEnvironment(collectibleConfig, currentLevel);
@@ -93,12 +95,25 @@ public class GameManager : MonoBehaviour
         Debug.Log($"Started {currentLevel.levelName}");
     }
     
+    private void SetupFinishLine()
+    {
+        FinishLine finishLine = collectibleController.GetFinishLine();
+        if (finishLine != null)
+        {
+            finishLine.OnFinishLineCrossed += HandleLevelComplete;
+            Debug.Log("Finish line event connected!");
+        }
+        else
+        {
+            Debug.LogWarning("No finish line found!");
+        }
+    }
+    
     private void SetupSharpnerEvents()
     {
         if (sharpner != null)
         {
             sharpner.OnGameOver.AddListener(HandleGameOver);
-            sharpner.OnCollectibleSharpened.AddListener(HandleCollectibleSharpened);
             sharpner.OnGroundHit.AddListener(() => gameOverReason = "Hit the ground!");
             sharpner.OnUnsharpenableHit.AddListener((collectible) => gameOverReason = $"Hit {collectible.collectibleType}!");
             
@@ -129,20 +144,19 @@ public class GameManager : MonoBehaviour
         }
     }
     
-    private void HandleCollectibleSharpened(Collectible collectible)
-    {
-        Debug.Log($"Collectible sharpened: {collectible.collectibleType}");
-        
-        if (CheckWinCondition())
-        {
-            HandleLevelComplete();
-        }
-    }
-    
     private void HandleLevelComplete()
     {
+        if (isGameOver)
+            return;
+        
+        isGameOver = true;
         Debug.Log($"=== LEVEL COMPLETE! ===");
-        Debug.Log($"You sharpened all collectibles in {currentLevel.levelName}!");
+        Debug.Log($"Finished {currentLevel.levelName}!");
+        
+        if (scoreManager != null)
+        {
+            scoreManager.StopSharpening();
+        }
         
         if (uiManager != null)
         {
@@ -184,14 +198,5 @@ public class GameManager : MonoBehaviour
     public void RestartLevel()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    }
-    
-    public bool CheckWinCondition()
-    {
-        if (collectibleController == null || currentLevel == null)
-            return false;
-        
-        int collectedCount = collectibleController.GetCollectedCount();
-        return collectedCount >= currentLevel.collectiblesRequiredToWin;
     }
 }

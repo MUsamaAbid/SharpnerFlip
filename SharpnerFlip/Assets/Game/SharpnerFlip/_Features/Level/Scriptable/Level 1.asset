@@ -15,6 +15,6 @@ MonoBehaviour:
   levelNumber: 1
   levelName: Level 1
   collectibleTypes: 00000000
-  totalCollectibles: 1000
+  totalCollectibles: 8
   randomizeOrder: 1
   collectiblesRequiredToWin: 8

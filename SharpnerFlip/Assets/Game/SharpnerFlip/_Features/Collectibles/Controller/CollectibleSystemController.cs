@@ -7,6 +7,7 @@ public class CollectibleSystemController
     private CollectibleFactory factory;
     private CollectibleSystemConfig config;
     private List<Collectible> spawnedCollectibles = new List<Collectible>();
+    private FinishLine currentFinishLine;
     
     public void Initialize(Transform parent, CollectibleSystemConfig systemConfig)
     {
@@ -72,7 +73,36 @@ public class CollectibleSystemController
             currentSpawnPosition += spawnOffset;
         }
         
+        SpawnFinishLine(currentSpawnPosition);
+        
         Debug.Log($"Level {levelData.levelNumber}: Spawned {spawnedCollectibles.Count} collectibles");
+    }
+    
+    private void SpawnFinishLine(Vector3 position)
+    {
+        if (config.finishLinePrefab == null)
+        {
+            Debug.LogWarning("CollectibleSystemController: No finish line prefab assigned in config!");
+            return;
+        }
+        
+        Quaternion rotation = Quaternion.Euler(config.finishLineRotation);
+        GameObject finishLineObj = Object.Instantiate(config.finishLinePrefab, position, rotation, collectiblesParent);
+        currentFinishLine = finishLineObj.GetComponent<FinishLine>();
+        
+        if (currentFinishLine != null)
+        {
+            Debug.Log($"Spawned finish line at {position} with rotation {config.finishLineRotation}");
+        }
+        else
+        {
+            Debug.LogWarning("Finish line prefab doesn't have FinishLine component!");
+        }
+    }
+    
+    public FinishLine GetFinishLine()
+    {
+        return currentFinishLine;
     }
     
     private CollectibleType GetNextType(LevelData levelData, int index)
@@ -99,6 +129,12 @@ public class CollectibleSystemController
             }
         }
         spawnedCollectibles.Clear();
+        
+        if (currentFinishLine != null)
+        {
+            Object.Destroy(currentFinishLine.gameObject);
+            currentFinishLine = null;
+        }
     }
     
     public List<Collectible> GetSpawnedCollectibles()

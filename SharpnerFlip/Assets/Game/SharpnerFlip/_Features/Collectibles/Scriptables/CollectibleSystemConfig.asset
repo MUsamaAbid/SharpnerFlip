@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CollectibleSystemConfig
   collectiblePrefabs:
   - {fileID: 3740022612908733156, guid: 32cda7536ba5845ad9c7efb7d434599a, type: 3}
+  finishLinePrefab: {fileID: 2633946529884797254, guid: 87ca5bd2b06054301bcbcdbc3ebca420, type: 3}
+  finishLineRotation: {x: -90, y: 0, z: 0}
   initialSpawnPosition: {x: 0, y: 0, z: 2}
   spawnDirection: {x: 0, y: 0, z: 1}
   spaceBetweenCollectibles: 5
