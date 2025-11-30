@@ -17,4 +17,4 @@ MonoBehaviour:
   initialSpawnPosition: {x: 0, y: 0, z: 2}
   spawnDirection: {x: 0, y: 0, z: 1}
   spaceBetweenCollectibles: 5
-  sharpeningSpeed: 0.83
+  sharpeningSpeed: 0.85

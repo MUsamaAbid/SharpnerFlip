@@ -19,9 +19,14 @@ public class Sharpner : MonoBehaviour
     [SerializeField] private bool canSharpenOnlyWhileFlipping = true;
     [SerializeField] private float sharpeningGravityMultiplier = 0.3f;
     
+    [Header("Fail Detection")]
+    [SerializeField] private LayerMask groundLayer;
+    
     [Header("Events")]
     public UnityEvent<Collectible> OnCollectibleSharpened;
     public UnityEvent<Collectible> OnUnsharpenableHit;
+    public UnityEvent OnGroundHit;
+    public UnityEvent OnGameOver;
     
     private Rigidbody rigidBody;
     private float targetRotation;
@@ -29,9 +34,11 @@ public class Sharpner : MonoBehaviour
     private bool isFlipping;
     private bool isSharpening;
     private Collectible currentCollectible;
+    private bool isGameOver;
     
     public bool IsFlipping => isFlipping;
     public bool IsSharpening => isSharpening;
+    public bool IsGameOver => isGameOver;
     
     private void Awake()
     {
@@ -66,6 +73,9 @@ public class Sharpner : MonoBehaviour
     
     private void Update()
     {
+        if (isGameOver)
+            return;
+        
         if (Keyboard.current != null && Keyboard.current.spaceKey.wasPressedThisFrame)
         {
             Flip();
@@ -148,12 +158,24 @@ public class Sharpner : MonoBehaviour
     
     private void OnTriggerEnter(Collider other)
     {
+        if (isGameOver)
+            return;
+        
         Collectible collectible = other.GetComponent<Collectible>();
         
         if (collectible != null)
         {
             HandleCollectibleTrigger(collectible);
         }
+        else if (IsInLayerMask(other.gameObject.layer, groundLayer))
+        {
+            HandleGroundHit();
+        }
+    }
+    
+    private bool IsInLayerMask(int layer, LayerMask layerMask)
+    {
+        return ((1 << layer) & layerMask) != 0;
     }
     
     private void HandleCollectibleTrigger(Collectible collectible)
@@ -174,7 +196,15 @@ public class Sharpner : MonoBehaviour
         {
             Debug.LogWarning($"Hit unsharpenable object: {collectible.collectibleType}! FAIL!");
             OnUnsharpenableHit?.Invoke(collectible);
+            TriggerGameOver($"Hit unsharpenable object: {collectible.collectibleType}");
         }
+    }
+    
+    private void HandleGroundHit()
+    {
+        Debug.LogWarning("FAIL! Sharpener hit the ground!");
+        OnGroundHit?.Invoke();
+        TriggerGameOver("Hit the ground");
     }
     
     private void StartSharpening(Collectible collectible)
@@ -216,5 +246,22 @@ public class Sharpner : MonoBehaviour
     {
         Vector3 customGravity = Physics.gravity * sharpeningGravityMultiplier;
         rigidBody.AddForce(customGravity, ForceMode.Acceleration);
+    }
+    
+    private void TriggerGameOver(string reason)
+    {
+        if (isGameOver)
+            return;
+        
+        isGameOver = true;
+        
+        StopSharpening();
+        
+        rigidBody.linearVelocity = Vector3.zero;
+        rigidBody.angularVelocity = Vector3.zero;
+        rigidBody.isKinematic = true;
+        
+        Debug.LogError($"GAME OVER! Reason: {reason}");
+        OnGameOver?.Invoke();
     }
 }
