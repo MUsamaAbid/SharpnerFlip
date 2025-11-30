@@ -15,6 +15,16 @@ public class CollectibleSystemConfig : ScriptableObject
     [Header("Sharpening Settings")]
     public float sharpeningSpeed = 2f;
     
+    [Header("Environment Settings")]
+    public GameObject environmentPrefab;
+    public Vector3 environmentInitialPosition = new Vector3(0f, 0f, 0f);
+    public Vector3 environmentRotation = new Vector3(0f, 0f, 0f);
+    public float environmentPieceLength = 40f;
+    public float environmentSpawnPadding = 20f;
+    
+    [Header("Environment Culling")]
+    public int activeEnvironmentRange = 1;
+    
     public Collectible GetPrefabByType(CollectibleType type)
     {
         foreach (Collectible prefab in collectiblePrefabs)
