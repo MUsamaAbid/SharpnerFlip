@@ -219,7 +219,7 @@ public class Sharpner : MonoBehaviour
             currentVelocity.y = 0f;
             rigidBody.linearVelocity = currentVelocity;
             
-            collectible.StartSharpening();
+            collectible.StartSharpening(transform);
             
             Debug.Log($"SHARPENING STARTED - gravity reduced to {sharpeningGravityMultiplier}x, Y velocity reset to 0");
         }

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 34045544403671004}
   - component: {fileID: 9216035385241462842}
   - component: {fileID: 3740022612908733156}
+  - component: {fileID: 3203712437859970817}
   m_Layer: 0
   m_Name: Pencil
   m_TagString: Untagged
@@ -97,6 +98,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Collectible
   collectibleType: 0
   canBeSharpened: 1
+--- !u!114 &3203712437859970817
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7181747650990296742}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfc2f3289f47645c68464df13b400be8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SpiralPeelSpawner
+  config: {fileID: 11400000, guid: 697e9bba04bbf412fa6cb58ddf8f15bf, type: 2}
 --- !u!1001 &3959175774279145730
 PrefabInstance:
   m_ObjectHideFlags: 0

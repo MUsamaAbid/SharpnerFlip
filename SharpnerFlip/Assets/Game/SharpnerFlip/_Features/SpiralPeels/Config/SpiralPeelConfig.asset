@@ -1,0 +1,59 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c2adb36419d24dc49d90b74643a41d6, type: 3}
+  m_Name: SpiralPeelConfig
+  m_EditorClassIdentifier: Assembly-CSharp::SpiralPeelConfig
+  peelMaterial: {fileID: 2100000, guid: b9a8c5e04b92e423da9e723478dd6ebf, type: 2}
+  peelWidth: 0.15
+  peelLength: 0.8
+  peelThickness: 0.2
+  peelSegments: 16
+  spawnRate: 0.08
+  peelsPerSpawn: 2
+  spawnRadius: 0.2
+  baseForce: {x: 0, y: 1.5, z: 0.5}
+  forceRandomness: 1.5
+  torqueStrength: 150
+  peelLifetime: 2.5
+  peelMass: 0.01
+  linearDamping: 0.5
+  angularDamping: 0.5
+  rainbowGradient:
+    serializedVersion: 2
+    key0: {r: 1, g: 0, b: 0, a: 1}
+    key1: {r: 1, g: 0.90760064, b: 0.13333333, a: 1}
+    key2: {r: 0.45635787, g: 1, b: 0.26666665, a: 1}
+    key3: {r: 0.39215684, g: 1, b: 0.8062237, a: 0}
+    key4: {r: 0.53333336, g: 0.79644907, b: 1, a: 0}
+    key5: {r: 0, g: 0.02439022, b: 1, a: 0}
+    key6: {r: 0.94275093, g: 0, b: 1, a: 0}
+    key7: {r: 1, g: 0, b: 0.6076498, a: 0}
+    ctime0: 0
+    ctime1: 8674
+    ctime2: 17540
+    ctime3: 25636
+    ctime4: 34888
+    ctime5: 44333
+    ctime6: 54548
+    ctime7: 65535
+    atime0: 0
+    atime1: 7710
+    atime2: 65535
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_ColorSpace: -1
+    m_NumColorKeys: 8
+    m_NumAlphaKeys: 3

@@ -12,6 +12,7 @@ public class Collectible : MonoBehaviour
     private bool _isBeingSharpened = false;
     private float sharpeningSpeed;
     private Vector3 originalScale;
+    private SpiralPeelSpawner peelSpawner;
     
     public bool IsCollected => isCollected;
     public bool IsBeingSharpened => _isBeingSharpened;
@@ -20,6 +21,12 @@ public class Collectible : MonoBehaviour
     {
         originalScale = transform.localScale;
         this.sharpeningSpeed = sharpeningSpeed;
+        
+        peelSpawner = GetComponentInChildren<SpiralPeelSpawner>();
+        if (peelSpawner == null)
+        {
+            peelSpawner = GetComponent<SpiralPeelSpawner>();
+        }
     }
     
     public void MarkAsCollected()
@@ -27,11 +34,17 @@ public class Collectible : MonoBehaviour
         isCollected = true;
     }
     
-    public void StartSharpening()
+    public void StartSharpening(Transform sharpenerTransform)
     {
         if (!_isBeingSharpened && canBeSharpened)
         {
             _isBeingSharpened = true;
+            
+            if (peelSpawner != null)
+            {
+                peelSpawner.StartSpawning(sharpenerTransform);
+            }
+            
             Debug.Log($"{collectibleType} - Sharpening effect started");
         }
     }
@@ -41,6 +54,12 @@ public class Collectible : MonoBehaviour
         if (_isBeingSharpened)
         {
             _isBeingSharpened = false;
+            
+            if (peelSpawner != null)
+            {
+                peelSpawner.StopSpawning();
+            }
+            
             Debug.Log($"{collectibleType} - Sharpening effect stopped");
         }
     }
