@@ -17,6 +17,9 @@ public class GameManager : MonoBehaviour
     [Header("UI")]
     [SerializeField] private GameplayUIManager uiManager;
     
+    [Header("Score")]
+    [SerializeField] private ScoreManager scoreManager;
+    
     private CollectibleSystemController collectibleController;
     private EnvironmentSpawner environmentSpawner;
     private bool isGameOver;
@@ -67,6 +70,18 @@ public class GameManager : MonoBehaviour
             uiManager = FindFirstObjectByType<GameplayUIManager>();
         }
         
+        if (scoreManager == null)
+        {
+            scoreManager = FindFirstObjectByType<ScoreManager>();
+            if (scoreManager == null)
+            {
+                GameObject scoreObject = new GameObject("ScoreManager");
+                scoreManager = scoreObject.AddComponent<ScoreManager>();
+            }
+        }
+        
+        scoreManager.ResetScore();
+        
         collectibleController = new CollectibleSystemController();
         collectibleController.Initialize(collectiblesParent, collectibleConfig);
         collectibleController.SpawnCollectibles(currentLevel);
@@ -86,6 +101,12 @@ public class GameManager : MonoBehaviour
             sharpner.OnCollectibleSharpened.AddListener(HandleCollectibleSharpened);
             sharpner.OnGroundHit.AddListener(() => gameOverReason = "Hit the ground!");
             sharpner.OnUnsharpenableHit.AddListener((collectible) => gameOverReason = $"Hit {collectible.collectibleType}!");
+            
+            if (scoreManager != null)
+            {
+                sharpner.OnSharpeningStarted.AddListener(() => scoreManager.StartSharpening());
+                sharpner.OnSharpeningStopped.AddListener(() => scoreManager.StopSharpening());
+            }
         }
     }
     

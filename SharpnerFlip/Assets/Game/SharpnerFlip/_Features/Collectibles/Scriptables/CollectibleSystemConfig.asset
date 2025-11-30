@@ -17,7 +17,7 @@ MonoBehaviour:
   initialSpawnPosition: {x: 0, y: 0, z: 2}
   spawnDirection: {x: 0, y: 0, z: 1}
   spaceBetweenCollectibles: 5
-  sharpeningSpeed: 0.85
+  sharpeningSpeed: 0.83
   environmentPrefab: {fileID: 3398085937728542118, guid: c05b0d58243f644e993105c76993d8f9, type: 3}
   environmentInitialPosition: {x: -16.29, y: 3, z: -9.27}
   environmentRotation: {x: 0, y: 180, z: 0}

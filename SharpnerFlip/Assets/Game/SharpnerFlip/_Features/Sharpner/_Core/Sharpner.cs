@@ -27,6 +27,8 @@ public class Sharpner : MonoBehaviour
     public UnityEvent<Collectible> OnUnsharpenableHit;
     public UnityEvent OnGroundHit;
     public UnityEvent OnGameOver;
+    public UnityEvent OnSharpeningStarted;
+    public UnityEvent OnSharpeningStopped;
     
     private Rigidbody rigidBody;
     private float targetRotation;
@@ -220,6 +222,7 @@ public class Sharpner : MonoBehaviour
             rigidBody.linearVelocity = currentVelocity;
             
             collectible.StartSharpening(transform);
+            OnSharpeningStarted?.Invoke();
             
             Debug.Log($"SHARPENING STARTED - gravity reduced to {sharpeningGravityMultiplier}x, Y velocity reset to 0");
         }
@@ -238,6 +241,7 @@ public class Sharpner : MonoBehaviour
                 currentCollectible = null;
             }
             
+            OnSharpeningStopped?.Invoke();
             Debug.Log("Stopped sharpening - gravity restored to normal");
         }
     }
