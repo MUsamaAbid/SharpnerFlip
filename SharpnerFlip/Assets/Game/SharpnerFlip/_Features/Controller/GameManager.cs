@@ -20,6 +20,9 @@ public class GameManager : MonoBehaviour
     [Header("Score")]
     [SerializeField] private ScoreManager scoreManager;
     
+    [Header("Feedback")]
+    [SerializeField] private CameraShake cameraShake;
+    
     private CollectibleSystemController collectibleController;
     private EnvironmentSpawner environmentSpawner;
     private bool isGameOver;
@@ -80,6 +83,11 @@ public class GameManager : MonoBehaviour
             }
         }
         
+        if (cameraShake == null)
+        {
+            cameraShake = FindFirstObjectByType<CameraShake>();
+        }
+        
         scoreManager.ResetScore();
         
         collectibleController = new CollectibleSystemController();
@@ -114,14 +122,45 @@ public class GameManager : MonoBehaviour
         if (sharpner != null)
         {
             sharpner.OnGameOver.AddListener(HandleGameOver);
-            sharpner.OnGroundHit.AddListener(() => gameOverReason = "Hit the ground!");
-            sharpner.OnUnsharpenableHit.AddListener((collectible) => gameOverReason = $"Hit {collectible.collectibleType}!");
+            sharpner.OnGroundHit.AddListener(HandleGroundHit);
+            sharpner.OnUnsharpenableHit.AddListener(HandleUnsharpenableHit);
+            sharpner.OnGameStarted.AddListener(HandleGameStarted);
             
             if (scoreManager != null)
             {
                 sharpner.OnSharpeningStarted.AddListener(() => scoreManager.StartSharpening());
                 sharpner.OnSharpeningStopped.AddListener(() => scoreManager.StopSharpening());
             }
+        }
+    }
+    
+    private void HandleGroundHit()
+    {
+        gameOverReason = "Hit the ground!";
+        
+        if (cameraShake != null)
+        {
+            cameraShake.ShakeOnGroundHit();
+        }
+    }
+    
+    private void HandleUnsharpenableHit(Collectible collectible)
+    {
+        gameOverReason = $"Hit {collectible.collectibleType}!";
+        
+        if (cameraShake != null)
+        {
+            cameraShake.ShakeOnCollectibleHit();
+        }
+    }
+    
+    private void HandleGameStarted()
+    {
+        Debug.Log("=== GAME STARTED ===");
+        
+        if (uiManager != null)
+        {
+            uiManager.HideTapToStart();
         }
     }
     
@@ -132,6 +171,11 @@ public class GameManager : MonoBehaviour
         
         isGameOver = true;
         Debug.Log("=== GAME OVER ===");
+        
+        if (cameraShake != null)
+        {
+            cameraShake.ShakeOnGameOver();
+        }
         
         if (uiManager != null)
         {

@@ -15,9 +15,12 @@ public class CameraFollow : MonoBehaviour
     [SerializeField] private float smoothSpeed = 15f;
     
     private Vector3 offset;
+    private CameraShake cameraShake;
     
     private void Start()
     {
+        cameraShake = GetComponent<CameraShake>();
+        
         if (target != null)
         {
             offset = transform.position - target.position;
@@ -50,6 +53,11 @@ public class CameraFollow : MonoBehaviour
         else
         {
             transform.position = desiredPosition;
+        }
+        
+        if (cameraShake != null)
+        {
+            transform.position += cameraShake.ShakeOffset;
         }
     }
 }

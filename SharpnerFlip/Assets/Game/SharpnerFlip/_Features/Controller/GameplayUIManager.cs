@@ -12,6 +12,7 @@ public class GameplayUIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI scoreText;
     [SerializeField] private TextMeshProUGUI comboText;
     [SerializeField] private TextMeshProUGUI highScoreText;
+    [SerializeField] private GameObject tapToStartText;
     
     [Header("Game Over Elements")]
     [SerializeField] private TextMeshProUGUI gameOverReasonText;
@@ -56,6 +57,8 @@ public class GameplayUIManager : MonoBehaviour
         {
             newHighScoreBanner.SetActive(false);
         }
+        
+        ShowTapToStart();
     }
     
     private void OnDestroy()
@@ -107,6 +110,22 @@ public class GameplayUIManager : MonoBehaviour
         if (newHighScoreBanner != null)
         {
             newHighScoreBanner.SetActive(true);
+        }
+    }
+    
+    private void ShowTapToStart()
+    {
+        if (tapToStartText != null)
+        {
+            tapToStartText.gameObject.SetActive(true);
+        }
+    }
+    
+    public void HideTapToStart()
+    {
+        if (tapToStartText != null)
+        {
+            tapToStartText.gameObject.SetActive(false);
         }
     }
     

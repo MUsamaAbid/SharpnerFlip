@@ -29,6 +29,7 @@ public class Sharpner : MonoBehaviour
     public UnityEvent OnGameOver;
     public UnityEvent OnSharpeningStarted;
     public UnityEvent OnSharpeningStopped;
+    public UnityEvent OnGameStarted;
     
     private Rigidbody rigidBody;
     private float targetRotation;
@@ -37,20 +38,24 @@ public class Sharpner : MonoBehaviour
     private bool isSharpening;
     private Collectible currentCollectible;
     private bool isGameOver;
+    private bool hasGameStarted;
     
     public bool IsFlipping => isFlipping;
     public bool IsSharpening => isSharpening;
     public bool IsGameOver => isGameOver;
+    public bool HasGameStarted => hasGameStarted;
     
     private void Awake()
     {
         rigidBody = GetComponent<Rigidbody>();
         currentRotationProgress = 0f;
+        hasGameStarted = false;
     }
     
     private void Start()
     {
         SetupRigidbody();
+        rigidBody.useGravity = false;
     }
     
     private void OnValidate()
@@ -66,7 +71,6 @@ public class Sharpner : MonoBehaviour
         if (rigidBody == null)
             rigidBody = GetComponent<Rigidbody>();
             
-        rigidBody.useGravity = true;
         rigidBody.interpolation = RigidbodyInterpolation.Interpolate;
         rigidBody.rotation = Quaternion.Euler(defaultRotation);
         
@@ -107,8 +111,21 @@ public class Sharpner : MonoBehaviour
         }
     }
     
+    private void StartGame()
+    {
+        hasGameStarted = true;
+        rigidBody.useGravity = true;
+        OnGameStarted?.Invoke();
+        Debug.Log("Game Started!");
+    }
+    
     void Flip()
     {
+        if (!hasGameStarted)
+        {
+            StartGame();
+        }
+        
         targetRotation += 360f;
         
         if (!isFlipping)
